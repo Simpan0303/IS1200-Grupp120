@@ -1,0 +1,59 @@
+--- Assignment 2 ---
+
+What does it mean when a function does not return a value? How do you state that in a
+program? How can then the function (or more precisely, the procedure) perform anything
+useful?
+
+- When a function does not return a value, it means that the function is a procedure. 
+  This means that the function does not return a value, but instead performs some action. 
+  This is stated in a program by using the keyword 'void' before the function name. 
+  The function can perform something useful by performing some action, 
+  such as printing to the console, or modifying a global variable.
+
+
+How did you implement the side effect that is needed to make print_number behave
+correctly? 
+
+- I implemented the side effect by using a global variable, COLUMN_COUNT, to keep track of the number of columns printed.
+  I then increment the COLUMN_COUNT variable each time a number is printed. 
+  When COLUMN_COUNT reaches the value of COLUMNS, I print a newline and reset COLUMN_COUNT to 0.
+
+
+
+
+--- Assignment 3 ---
+
+How did you represent the marking of 'prime' and 'not a prime' in the memory array?
+
+- I used an array of integers, where 1 represents a prime number and 0 represents a non-prime number.
+
+
+Which are the main steps in the algorithm? How have you implemented these steps?
+
+- The main steps are to create an array of n elements, all set to 1. 
+    Then set the first two elements to 0. 
+    Then loop through the array and set all non-prime numbers to 0. 
+    Finally, print the prime numbers.
+
+
+What is the largest prime number that you can print within 2 seconds of computation? What
+is the largest number you can print within 10 seconds? Is it the same for print_prime.c,
+sieves.c, and sieves-heap.c? Why or why not?
+
+- The time complexity of the Sieve of Eratosthenes algorithm is O(n log log n).
+    This is because the algorithm iterates over each number up to n, and for each prime number, it marks its multiples. 
+    The number of operations is approximately proportional to the sum of the series: n/2 + n/3 + n/5 + n/7 + ..., 
+    which is n times the sum of the reciprocals of the prime numbers up to n.
+    According to the prime number theorem, this sum is approximately log log n, hence the time complexity of O(n log log n).
+
+    The largest prime number it can print in 2 seconds:
+    Through testing with Simons computer - about 10^7. 
+    Because of this computers hardware.
+
+    This is not the same for print_prime.c, sieves.c, and sieves-heap.c.
+    Because of different time complexity.
+    print_prime.c has a time complexity of O(n^0.5). (because of the for loop in is_prime)
+    sieves.c and sieves-heap.c has a time complexity of O(n log log n). (because of the Sieve of Eratosthenes algorithm)
+    Thus print_prime is slower than sieves.c and sieves-heap.c.
+    
+    (The largest prime number print_primes.c can print in 2 seconds: about 10^6.)
