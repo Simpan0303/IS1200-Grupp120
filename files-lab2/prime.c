@@ -8,8 +8,12 @@
 
 #include <stdio.h>
 
-int is_prime(int n){
-  return 0;
+int is_prime(int n) {
+    if (n <= 1) return 0; // not prime
+    for (int i = 2; i * i <= n; i++) {
+        if (n % i == 0) return 0; // not prime
+    }
+    return 1; // else prime
 }
 
 int main(void){
