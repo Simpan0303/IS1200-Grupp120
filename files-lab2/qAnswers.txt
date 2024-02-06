@@ -57,3 +57,71 @@ sieves.c, and sieves-heap.c? Why or why not?
     Thus print_prime is slower than sieves.c and sieves-heap.c.
     
     (The largest prime number print_primes.c can print in 2 seconds: about 10^6.)
+
+
+
+
+--- Assignment 4 ---
+* Explain how you get the pointer addresses to the two char arrays (text1 and text2) and
+the counter variable (count) in function work().
+
+- The pointer addresses to the two char arrays (text1 and text2) and the counter variable (count)
+  are obtained by passing the address of the pointer to the function copycodes. 
+  The function copycodes then allocates memory for the list and assigns the address of the 
+  allocated memory to the pointer passed to it. The function then copies the ASCII codes of 
+  the text into the list and increments the count variable.
+
+
+* What does it mean to increment a pointer? What is the difference between incrementing the
+pointer that points to the ASCII text string, and incrementing the pointer that points to the
+integer array? In what way is the assembler code and the C code different?
+
+- Incrementing a pointer means to increase the address the pointer points to by the size of the
+  data type the pointer points to. 
+  The difference between incrementing the pointer that points to the ASCII text string and 
+  incrementing the pointer that points to the integer array is that the pointer that points 
+  to the ASCII text string is incremented by 1, while the pointer that points to the integer 
+  array is incremented by 4. 
+
+  This is because the size of the data type the pointer that points to the ASCII text string 
+  points to is 1 byte, while the size of the data type the pointer that points to the integer 
+  array points to is 4 bytes. 
+  The assembler code and the C code are different in that the C code uses the ++ operator to 
+  increment the pointer, while the assembler code uses the add instruction to increment the pointer.
+
+
+* What is the difference between incrementing a pointer and incrementing a variable that a
+pointer points to? Explain how your code is incrementing the count variable.
+
+- The difference between incrementing a pointer and incrementing a variable that a pointer 
+  points to is that incrementing a pointer means to increase the address the pointer points to 
+  by the size of the data type the pointer points to, while incrementing a variable that a 
+  pointer points to means to increase the value of the variable by 1. 
+  The code is incrementing the count variable by incrementing the pointer that points to the 
+  integer array. This is done by incrementing the pointer by 1, which increases the value of 
+  the count variable by 1.
+
+
+* Explain a statement in your code where you are dereferencing a pointer. What does this
+mean? Explain by comparing with the corresponding assembler code.
+
+- A statement in the code where a pointer is dereferenced is the statement (*list)[i] = (int) text[i]; 
+  (line 15 pointers.c)
+  This means that the value of the text pointer is accessed and assigned to the list pointer. 
+  This is done by using the * operator to access the value of the text pointer and the [] operator 
+  to access the value of the list pointer. 
+  The corresponding assembler code uses the mov instruction to access the value of the text pointer 
+  and the mov instruction to access the value of the list pointer.
+
+
+* Is your computer using big-endian or little-endian? How did you come to your conclusion?
+Is there any benefit of using either of the two alternatives?
+
+- My computer is using little-endian. Googled it. But also:
+  This is concluded from the output of the endian_proof function, 
+  which shows that the least significant byte is stored at the lowest address. 
+  There is no benefit of using either of the two alternatives, as the choice of endianness is 
+  arbitrary and does not affect the performance of the computer. 
+  However, it is important to be aware of the endianness of the computer when working with 
+  data that is stored in a different endianness, as this can lead to errors in the data.
+
