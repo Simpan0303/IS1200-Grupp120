@@ -125,3 +125,111 @@ Is there any benefit of using either of the two alternatives?
   However, it is important to be aware of the endianness of the computer when working with 
   data that is stored in a different endianness, as this can lead to errors in the data.
 
+
+
+
+--- Assignment 5 ---
+• Consider AM18, AM19, and AF1. Explain why gv ends up with the incremented value, but
+m does not.
+
+- gv ends up with the incremented value but m does not because gv is a global variable 
+  and its value is changed inside the fun function. m is a local variable in the main function 
+  and its value is not changed after the initial assignment.
+
+
+• Pointer cp is a character pointer that points to a sequence of bytes. What is the size of the
+cp pointer itself?
+
+- The size of the pointer cp itself is dependent on the system architecture. On a 32-bit system, 
+  it would be 4 bytes, and on a 64-bit system, it would be 8 bytes.
+
+
+• Explain how a C string is laid out in memory. Why does the character string that cp points
+to have to be 9 bytes?
+
+- A C string is laid out in memory as a sequence of characters, followed by a 
+  null terminator (\0). The character string that cp points to has to be 9 bytes because 
+  it includes 8 characters and a null terminator.
+
+
+• Which addresses have fun and main? Which sections are they located in? What kind of
+memory are they stored in? What is the meaning of the data that these symbols points to?
+
+- The addresses of fun and main are determined at runtime by the operating system. 
+  They are located in the text section of memory, which is read-only and stores the 
+  program's executable code. The data these symbols point to is the machine code of 
+  the functions.
+
+
+Extra questions (oral examination):
+• Which addresses are variables in and gv located at? Which memory sections according to
+the PIC32 memory map? Why?
+
+- The address of "gv" is 0xA000000C and address of "in" is 0xA0000008.
+  They are located in the data section of memory, which is used for storing global and 
+  static variables. The data section is located in RAM, which is used for storing data 
+  that is manipulated by the program.
+
+
+• Variables p and m are not global variables. Where are they allocated? Which memory
+section is used for these variables? Why are the address numbers for p and m much larger
+than for in and gv?
+
+- The variables p and m are allocated on the stack. The stack section is used for storing 
+  local variables and function call information. The address numbers for p and m are much 
+  larger than for in and gv because the stack is located at a higher address in memory than 
+  the data section.
+
+
+• At print statement AM5, what is the address of pointer p, what is the value of pointer p, and
+what value is pointer p pointing to?
+
+- The adress of pointer p at AM5 is 0xA0003FE8, the data/value of pointer p is 0xA0003FE4.
+  The value of the pointer means the adress of the variable it is pointing to.
+  This gives adress: A0003FE4, which is the adress of the variable m.
+  m, at AM6, has the value 0x00000007, or 0x7.
+
+
+• At print statement AM7, what is the address of pointer p, what is the value of pointer p, and
+what value is pointer p pointing to?
+
+- The adress of pointer p at AM7 is 0xA0003FE8, the data/value of pointer p is 0xA0003FE4.
+  The value of the pointer means the adress of the variable it is pointing to.
+  This gives adress: A0003FE4, which is the adress of the variable m.
+  m, at AM8, has the value 0x00000008, or 0x8. We can see that m has been incremented by 1.
+
+  This happens on line 54: *p = *p + 1;
+  The value of *p is the value of the variable p is pointing to, which is m.
+  So *p = *p + 1; is the same as m = m + 1;.
+
+
+• Consider AM14 to AM17. Is the PIC32 processor using big-endian or little-endian? Why?
+
+- The PIC32 processor is using little-endian. This is because the least significant byte 
+  of the 32-bit word is stored at the lowest memory address, and the most significant byte 
+  is stored at the highest memory address. 
+
+  AM14: 
+    cs[0]
+    Adress: 0xA0003FEC
+    Data: 0xCD
+  
+  AM15:
+    cs[1]
+    Adress: 0xA0003FED
+    Data: 0xAB
+
+  AM16:
+    cs[2]
+    Adress: 0xA0003FEE
+    Data: 0x34
+  
+  AM17:
+    cs[3]
+    Adress: 0xA0003FEF
+    Data: 0x12
+
+
+  AM14 to AM17 shows that the least significant byte is stored at the lowest memory address,
+  and the most significant byte is stored at the highest memory address because the address 
+  increases by 1 for each byte, and the data is stored in reverse order.

@@ -81,3 +81,68 @@ int main()
 
   showinfo();
 }
+
+
+/*
+p = (int*)cp; get the value of cp, which is the address of cs[0].
+So p points to cs[0].
+0x6A6E6F42 is 4 bytes, so it is an int.
+
+What is stored in cs?
+cs is an array of chars, so it stores 8 bytes.
+Char is retrieved from:
+char cs[ 9 ] = "Bonjour!";
+char * cp = cs; 
+So cs[0] = 'B', cs[1] = 'o', cs[2] = 'n', cs[3] = 'j', cs[4] = 'o', cs[5] = 'u', cs[6] = 'r', cs[7] = '!', cs[8] = '\0'
+
+AM10: 
+    cs[0]
+    Adress: 0xA0003FEC
+    Data: 0x42
+  
+AM11:
+    cs[1]
+    Adress: 0xA0003FED
+    Data: 0x6F
+
+AM12:
+    cs[2]
+    Adress: 0xA0003FEE
+    Data: 0x6E
+  
+AM13:
+    cs[3]
+    Adress: 0xA0003FEF
+    Data: 0x6A
+
+
+
+
+*p = 0x1234abcd;
+
+AM14: 
+    cs[0]
+    Adress: 0xA0003FEC
+    Data: 0xCD
+  
+AM15:
+    cs[1]
+    Adress: 0xA0003FED
+    Data: 0xAB
+
+AM16:
+    cs[2]
+    Adress: 0xA0003FEE
+    Data: 0x34
+  
+AM17:
+    cs[3]
+    Adress: 0xA0003FEF
+    Data: 0x12
+
+
+OBS! 
+The value of *p is the value of the variable p is pointing to, which is m.
+So *p = *p + 1; is the same as m = m + 1;.
+
+*/
