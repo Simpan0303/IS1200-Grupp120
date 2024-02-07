@@ -155,10 +155,10 @@ to have to be 9 bytes?
 • Which addresses have fun and main? Which sections are they located in? What kind of
 memory are they stored in? What is the meaning of the data that these symbols points to?
 
-- The addresses of fun and main are determined at runtime by the operating system. 
-  They are located in the text section of memory, which is read-only and stores the 
-  program's executable code. The data these symbols point to is the machine code of 
-  the functions.
+- fun adress is 0x9D001180, data is 0x27BDFFE8, which is located in the text section of memory
+  because it is a function. What the data points to is the adress of the first instruction of the function.
+  main adress is 0x9D0011D8, data is 0x27BDFFD0, which is located in the text section of memory
+  because it is a function. What the data points to is the adress of the first instruction of the function.
 
 
 Extra questions (oral examination):
