@@ -230,6 +230,8 @@ what value is pointer p pointing to?
     Data: 0x12
 
 
+    cs shows that
+
   AM14 to AM17 shows that the least significant byte is stored at the lowest memory address,
   and the most significant byte is stored at the highest memory address because the address 
   increases by 1 for each byte, and the data is stored in reverse order.
