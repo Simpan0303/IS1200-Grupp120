@@ -26,11 +26,7 @@
 time2string:
     	# save registers, push stack
     	PUSH $ra
-    	PUSH $t0
-    	PUSH $t1
-    	PUSH $t2
-    	PUSH $t3
-    	PUSH $t4
+    	
     
     	# create "write pointer" by copying a0 address
     	move $t5, $a0
@@ -72,21 +68,39 @@ time2string:
     	addi $t5, $t5, 1
     
     	# convert and store second sec digit
-    	move $a0, $t4
+    	blt $t4, 9, skip
+    	
+    	# store "NINE"
+	li $t6, 0x4e    	# load ASCII value of 'N' into $t6
+	sb $t6, 0($t5) 		# store 'N'
+	addi $t5, $t5, 1 	# increment memory address
+
+	li $t6, 0x49    	
+	sb $t6, 0($t5) 		
+	addi $t5, $t5, 1 	
+
+	li $t6, 0x4e    	
+	sb $t6, 0($t5) 		
+	addi $t5, $t5, 1 	
+
+	li $t6, 0x45    	
+	sb $t6, 0($t5) 		
+	addi $t5, $t5, 1 	
+    	
+    	#addi $t5, $t5, 1	# för att printa hela NINE, 
+    	jal skip2
+    	nop
+skip:	    
+	move $a0, $t4
     	jal hexasc
     	nop
     	sb $v0, 0($t5)       # store byte
-    	addi $t5, $t5, 1
-    
+    	addi $t5, $t5, 1	
+skip2:
     	# store null byte to mark end of string
     	sb $0, 0($t5)
     
     	# restore stack
-    	POP $t4
-    	POP $t3
-    	POP $t2
-    	POP $t1
-    	POP $t0
     	POP $ra
 
     	jr $ra
@@ -109,18 +123,20 @@ end:				# return v0 and jump back to main
   	
   	.global delay	
 delay:
+li $t7,0                      #ny
     li $a1,0
     ble $a0, 0, slut
+    nop
     add $a0, $a0, -1
-    nop
-jvi:
-    bne $a1,$a0,delay
-    # nop
-    add $a1,$a1,1
-    j jvi
-    nop
+    jvi:
+        bne $a1,$a0,delay
+        nop
+        add $t7,$t7,1          #ändrad
+        ble $t7, 3360000, jvi 
+        nop           
     j delay
-    nop
+nop
+
 slut:
 	jr $ra
 	nop

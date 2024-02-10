@@ -46,7 +46,7 @@ volatile int *porte;
 /* Lab-specific initialization goes here */
 void labinit( void )
 {
-  TRISD |= 0x0FE0
+  TRISD |= 0x0FE0;
 
   volatile int *trise = (volatile int*) 0xbf886100; // Define a volatile pointer to TRIS register of Port E
   *trise &= 0xFF00; // Set bits 7 through 0 as outputs
@@ -65,7 +65,27 @@ void labwork( void )
   tick( &mytime );
   display_image(96, icon);
 
+  int btns = getbtns();
+  int sws = getsw();
+  /*
+  if (btns && sws <= 9) {
+    if (btns == 0x8) // BTN4 is pressed
+        mytime = (mytime & 0x0FFF) | (sws << 12);
+    if (btns & 0x4) // BTN3 is pressed
+        mytime = (mytime & 0xF0FF) | (sws << 8);
+    if (btns & 0x2) // BTN2 is pressed
+        mytime = (mytime & 0xFF0F) | (sws << 4);
+  }
+  */
 
+  if (btns && sws <= 9) {
+      if (btns == 0x8) // BTN4 is pressed
+          mytime = (mytime & 0x0FFF) | (sws << 12);
+      if (btns == 0x4) // BTN3 is pressed
+          mytime = (mytime & 0xF0FF) | (sws << 8);
+      if (btns == 0x2) // BTN2 is pressed
+          mytime = (mytime & 0xFF0F) | (sws << 4);
+  }
 
 
 
