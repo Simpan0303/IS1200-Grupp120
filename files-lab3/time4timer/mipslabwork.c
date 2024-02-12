@@ -54,6 +54,48 @@ void labinit( void )
 
 void labwork( void )
 {
+  // Check for timeout event (Timer 2)
+  if (IFS(0) & 0x100) {
+    IFSCLR(0) = 0x100; // Clear the timeout event flag
+    timeoutcount++;
+
+    // Update the display every 10 timeouts (1 second) --- CONTROLS SPEED ---
+    if (timeoutcount >= 10) {
+      timeoutcount = 0;
+      time2string(textstring, mytime);
+      display_string(3, textstring);
+      display_update();
+      tick(&mytime);
+
+      (*porte)++; // Increment PORTE to update the LED status
+    }
+  }
+
+  if (btns & 0x4) { // if button 4 is pressed
+    int sws_value = sws & 0xF; // Get the value of SW4 through SW1
+    mytime = (mytime & 0x0FFF) | (sws_value << 12);
+    time2string(textstring, mytime);
+    display_string(3, textstring);
+    display_update();
+  }
+  if (btns & 0x2) { // if button 3 is pressed
+    int sws_value = sws & 0xF; // Get the value of SW4 through SW1
+    mytime = (mytime & 0xF0FF) | (sws_value << 8);
+    time2string(textstring, mytime);
+    display_string(3, textstring);
+    display_update();
+  }
+  if (btns & 0x1) { // if button 2 is pressed
+    int sws_value = sws & 0xF; // Get the value of SW4 through SW1
+    mytime = (mytime & 0xFF0F) | (sws_value << 4);
+    time2string(textstring, mytime);
+    display_string(3, textstring);
+    display_update();
+  }
+}
+/*
+void labwork( void )
+{
 
   // Check for timeout event (Timer 2)
   if (IFS(0) & 0x100) {
@@ -85,7 +127,43 @@ void labwork( void )
     mytime = (mytime & 0xFF0F) | (sws_value << 4);
   }
 }
+*/
+
+
+
+/*
+--- Assignment 2 ---
+
+When the time-out event-flag is a "1", how does your code reset it to "0"?
+• What would happen if the time-out event-flag was not reset to "0" by your code? Why?
+- The code resets the time-out event-flag to "0" by using the IFSCLR(0) = 0x100; instruction. 
+If the time-out event-flag was not reset to "0" by the code, 
+the code would not be able to detect the next time-out event, 
+as the flag would still be set to "1" and the code would not enter the if-statement that checks for the time-out event-flag.
+Why is IFSCLR(0) set to 0x100 and not any other value?
+The IFSCLR(0) is set to 0x100 because the time-out event-flag is located at bit 8 of the IFS(0) register. 
+The IFSCLR(0) = 0x100 instruction clears the time-out event-flag by setting bit 8 of the IFS(0) register to "0".
+
+
+
+• Which device-register (or registers) must be written to define the time between time-out
+events? Describe the function of that register (or of those registers).
+- The PR2 register must be written to define the time between time-out events.
+Because the PR2 register is the period register for Timer 2,
+writing to it sets the time between time-out events.
+
+
+• If you press BTN3 quickly, does the time update reliably? Why, or why not? If not, would
+that be easy to change? If so, how?
+- If you press BTN3 quickly, the time does not update reliably.
+This is because the code only updates the time every 10 time-out events (1 second).
+To make the time update reliably when BTN3 is pressed quickly,
+the code could be changed to update the time every time the BTN3 is pressed.
+This could be done by removing the if-statement that checks for the time-out event,
 
 
 
 
+
+
+*/

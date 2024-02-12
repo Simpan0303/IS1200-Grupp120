@@ -76,20 +76,29 @@ void labwork( void )
 /*
 --- Assignment 1 ---
 • Test pressing BTN3 and BTN2 at the same time. What happens? Why?
-- All inputs change att the same time
-
+- All inputs change att the same time since the if statements are not mutually exclusive.
 
 
 • Three device-registers for input/output control are TRISE, TRISESET, and TRISECLR.
 Their functions are related. How? What are the differences?
+- TRISE is the register for controlling the direction of the pins on Port E. TRISESET and TRISECLR are used to set and clear the bits of the TRISE register.
+
+
 • In the generated assembly code, in which MIPS register will the return values from
 functions getbtns and getsw be placed in. You should be able to answer this question
 without debugging the generated assembly code.
+- The return values will be placed in register v0. Why? 
+Because the return value is a 32-bit integer, 
+and the MIPS calling convention states that the return value
+ of a function should be placed in register v0.
+
+
 • In this exercise, we explained which bits that should be used in Port D and Port E. How can
 you find this information in the PIC32 and ChipKIT manuals? Be prepared to demonstrate
 how to find this information in the manuals.
 Advice: check the lecture slides from lecture 5 for ideas.
-
+- The information can be found in the "PIC32 Family Reference Manual" and the "PIC32MX3XX/4XX Family Data Sheet".
+The information can be found by searching for the specific register names, such as "TRISE" and "PORTE".
 
 
 
