@@ -7,10 +7,10 @@ char* text1 = "This is a string.";
 char* text2 = "Yet another thing.";
 int* list1;
 int* list2;
-int* count; //= 0; // fix
+int count = 0; //= 0; // fix
 
 // Function to copy ASCII codes of text into list and increment count
-void copycodes(char* text, int** list) {
+void copycodes(char* text, int** list, int* count) {
   int len = strlen(text);
 
   // Allocate memory for list
@@ -25,8 +25,8 @@ void copycodes(char* text, int** list) {
 
 // Function to call copycodes for text1 and text2
 void work(void) {
-  copycodes(text1, &list1);
-  copycodes(text2, &list2);
+  copycodes(text1, &list1, &count);
+  copycodes(text2, &list2, &count);
 }
 
 

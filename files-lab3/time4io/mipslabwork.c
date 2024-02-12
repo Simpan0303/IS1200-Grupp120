@@ -11,21 +11,7 @@
    For copyright and licensing, see file COPYING */
 
 
-/*
-PIC32 ChipKit
-In file mipslabwork.c, add code in function labinit to initialize Port E so that bits 7 through 0
-of Port E are set as outputs (i.e., the 8 least significant bits). These bits are connected to 8 green
-LEDs on the Basic IO Shield. Register TRISE has address 0xbf886100.You should initialize the
-port using your own volatile pointer, that is, you should not use the definitions in pic32mx.h, yet.
-Do not change the function (direction) of any other bits of Port E.
-*/
 
-/*
-  In file mipslabwork.c, add code in function labwork to increase the binary value shown on the
-  8 green LEDs once each time the function tick is called. Initialize the value to 0, so that the LEDs
-  show how many "ticks" have occurred since the program was started. See below. You should use
-  your own volatile pointer. Register PORTE has address 0xbf886110
-*/
 
 #include <stdint.h>   /* Declarations of uint_32 and the like */
 #include <pic32mx.h>  /* Declarations of system-specific addresses etc */
@@ -43,55 +29,70 @@ void user_isr( void )
 
 volatile int *trise;
 volatile int *porte;
-/* Lab-specific initialization goes here */
 void labinit( void )
 {
-  TRISD |= 0x0FE0;
-
   volatile int *trise = (volatile int*) 0xbf886100; // Define a volatile pointer to TRIS register of Port E
   *trise &= 0xFF00; // Set bits 7 through 0 as outputs
 
   porte = (volatile int*) 0xbf886110; // Define a volatile pointer to PORTE register
   *porte = 0; // Initialize the value to 0
+
+  TRISD |= 0x0FE0;
 }
 
-/* This function is called repetitively from the main program */
 void labwork( void )
 {
+  (*porte)++; // Increment PORTE to update the LED status
+
+  // Button press processing
+  int btns = getbtns(); // buttons
+  int sws = getsw(); // switches
+
+  if (btns & 0x4) { // if button 4 is pressed
+    int sws_value = sws & 0xF; // Get the value of SW4 through SW1
+    mytime = (mytime & 0x0FFF) | (sws_value << 12);
+  }
+  if (btns & 0x2) { // if button 3 is pressed
+    int sws_value = sws & 0xF; // Get the value of SW4 through SW1
+    mytime = (mytime & 0xF0FF) | (sws_value << 8);
+  }
+  if (btns & 0x1) { // if button 2 is pressed
+    int sws_value = sws & 0xF; // Get the value of SW4 through SW1
+    mytime = (mytime & 0xFF0F) | (sws_value << 4);
+  }
+
+
+
+
   delay( 1000 );
-  time2string( textstring, mytime );
-  display_string( 3, textstring );
+  time2string(textstring, mytime);
+  display_string(3, textstring);
   display_update();
-  tick( &mytime );
+  tick(&mytime);
   display_image(96, icon);
-
-  int btns = getbtns();
-  int sws = getsw();
-  /*
-  if (btns && sws <= 9) {
-    if (btns == 0x8) // BTN4 is pressed
-        mytime = (mytime & 0x0FFF) | (sws << 12);
-    if (btns & 0x4) // BTN3 is pressed
-        mytime = (mytime & 0xF0FF) | (sws << 8);
-    if (btns & 0x2) // BTN2 is pressed
-        mytime = (mytime & 0xFF0F) | (sws << 4);
-  }
-  */
-
-  if (btns && sws <= 9) {
-      if (btns == 0x8) // BTN4 is pressed
-          mytime = (mytime & 0x0FFF) | (sws << 12);
-      if (btns == 0x4) // BTN3 is pressed
-          mytime = (mytime & 0xF0FF) | (sws << 8);
-      if (btns == 0x2) // BTN2 is pressed
-          mytime = (mytime & 0xFF0F) | (sws << 4);
-  }
-
-
-
-  (*porte)++; // Increase the binary value shown on the 8 green LEDs
+  
 }
 
+/*
+--- Assignment 1 ---
+• Test pressing BTN3 and BTN2 at the same time. What happens? Why?
+- All inputs change att the same time
 
+
+
+• Three device-registers for input/output control are TRISE, TRISESET, and TRISECLR.
+Their functions are related. How? What are the differences?
+• In the generated assembly code, in which MIPS register will the return values from
+functions getbtns and getsw be placed in. You should be able to answer this question
+without debugging the generated assembly code.
+• In this exercise, we explained which bits that should be used in Port D and Port E. How can
+you find this information in the PIC32 and ChipKIT manuals? Be prepared to demonstrate
+how to find this information in the manuals.
+Advice: check the lecture slides from lecture 5 for ideas.
+
+
+
+
+*/
 
 
