@@ -93,7 +93,7 @@ void labwork( void )
     display_update();
   }
 }
-/*
+/* // WITHOUT MODIFICATION
 void labwork( void )
 {
 
@@ -159,11 +159,8 @@ that be easy to change? If so, how?
 This is because the code only updates the time every 10 time-out events (1 second).
 To make the time update reliably when BTN3 is pressed quickly,
 the code could be changed to update the time every time the BTN3 is pressed.
-This could be done by removing the if-statement that checks for the time-out event,
-
-
-
-
+For example one could call time2string, display_string and display_update
+each time a button is called.
 
 
 */
