@@ -22,6 +22,7 @@
   enable_interrupt:
 	ei
 	jr $ra
+	nop
   
 	.text
 	

@@ -31,10 +31,15 @@ Do not change the function (direction) of any other bits of Port E.
 #include <pic32mx.h>  /* Declarations of system-specific addresses etc */
 #include "mipslab.h"  /* Declatations for these labs */
 
+#define INTCON_MVEC_MASK (1 << 12)
+
 int mytime = 0x5957;
 
 int prime = 1234567;
 
+volatile int *trise;
+volatile int *porte;
+int timeoutcount = 0; // Declare timeoutcount as a global variable
 
 
 char textstring[] = "text, more text, and even more text!";
@@ -42,25 +47,26 @@ char textstring[] = "text, more text, and even more text!";
 /* Interrupt Service Routine */
 void user_isr( void ) 
 {
- //acknowlege interrupt, ändra 1 till 0 igen...
- T2CON
- TMR2=0x0;
- IFSCLEAR(0)=0x00;
- //enable timer interrupt: IECSET=0x100;
- timeoutcount++;
- if(timeoutcount==100)
- {
-  //time2string, display_string, display_update and tick
-  time2string( textstring, mytime );
-  display_string( 3, textstring );
-  display_update();
-  tick( &mytime );
- }
+  // Check if Timer 2 interrupt flag is set
+  if (IFS(0) & 0x100) {
+    // Clear Timer 2 interrupt flag
+    IFSCLR(0) = 0x100;
+
+    timeoutcount++;
+    if(timeoutcount % 10 == 0) // Check if timeoutcount is a multiple of 10
+    {
+      //time2string, display_string, display_update and tick
+      time2string( textstring, mytime );
+      display_string( 3, textstring );
+      display_update();
+      tick( &mytime );
+    }
+  }
+ 
 }
 
-volatile int *trise;
-volatile int *porte;
-int timeoutcount = 0; // Declare timeoutcount as a global variable
+
+
 /* Lab-specific initialization goes here */
 void labinit( void )
 {
@@ -79,17 +85,39 @@ void labinit( void )
   IFSCLR(0) = 0x100; // Clear Timer 2 interrupt flag
   IECSET(0) = 0x100; // Enable Timer 2 interrupt
   T2CONSET = 0x8000; // Start Timer 2
-  GIE=1;
-  //alternativt __enable_irq(); kanske
-
+  INTCONSET = INTCON_MVEC_MASK; // Enable global interrupts
+  /*
+  INTEnableSystemMultiVectoredInt() is equivalent to the following:
+  INTCONSET = _INTCON_MVEC_MASK;
+  According to the PIC32MX documentation, 
+  INTCON_MVEC_MASK is a bit mask for the MVEC bit in the INTCON register, 
+  which is bit 12. So, you can define INTCON_MVEC_MASK as follows:
+  #define INTCON_MVEC_MASK (1 << 12)
+  */
 }
 
 void labwork( void ) {
  prime = nextprime( prime );
  display_string( 0, itoaconv( prime ) );
  display_update();
+
+ display_image(96, icon);
 }
 
 
 
+/*
+NOTES:
+INTCON_MVEC_MASK can be defined manually. 
+According to the PIC32MX documentation, 
+INTCON_MVEC_MASK is a bit mask for the MVEC bit in the INTCON register, 
+which is bit 12. So, define INTCON_MVEC_MASK as follows:
+#define INTCON_MVEC_MASK (1 << 12)
 
+void labinit( void )
+{
+  // ... other code ...
+
+  INTCONSET = INTCON_MVEC_MASK; // Enable global interrupts
+}
+*/
