@@ -32,7 +32,7 @@ volatile int *porte;
 void labinit( void )
 {
   volatile int *trise = (volatile int*) 0xbf886100; // Define a volatile pointer to TRIS register of Port E
-  *trise &= 0xFF00; // Set bits 7 through 0 as outputs
+  *trise &= 0xFFFFFF00; // Set bits 7 through 0 as outputs
 
   porte = (volatile int*) 0xbf886110; // Define a volatile pointer to PORTE register
   *porte = 0; // Initialize the value to 0

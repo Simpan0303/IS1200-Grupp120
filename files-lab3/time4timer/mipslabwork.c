@@ -70,6 +70,8 @@ void labwork( void )
       (*porte)++; // Increment PORTE to update the LED status
     }
   }
+  int btns = getbtns(); // buttons
+  int sws = getsw(); // switches
 
   if (btns & 0x4) { // if button 4 is pressed
     int sws_value = sws & 0xF; // Get the value of SW4 through SW1
