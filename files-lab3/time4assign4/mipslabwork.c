@@ -30,22 +30,6 @@ int timeoutcount = 0; // Declare timeoutcount as a global variable
 
 char textstring[] = "text, more text, and even more text!";
 
-void user_isr( void ) 
-{
-  // Check if Timer 2 interrupt flag is set
-  if (IFS(0) & 0x100) {
-    // Clear Timer 2 interrupt flag
-    IFSCLR(0) = 0x100;
-
-    //time2string, display_string, display_update and tick
-    time2string( textstring, mytime );
-    display_string( 3, textstring );
-    display_update();
-    tick( &mytime );
-  }
-}
-
-
 
 /* Lab-specific initialization goes here */
 void labinit( void )
@@ -70,6 +54,13 @@ void labinit( void )
 
   volatile int *ipc2 = (volatile int*) 0xbf8810b0; // Define a volatile pointer to IPC(2) register
   *ipc2 = (*ipc2 & ~0x1F) | (4 << 2) | 2; // Set priority level to 4 and subpriority level to 2
+
+  // Set up SW3 interrupt
+  volatile int *ipc3 = (volatile int*) 0xbf8810c0; // Define a volatile pointer to IPC(3) register
+  *ipc3 = (*ipc3 & ~0x1F) | (5 << 2) | 1; // Set priority level to 4 and subpriority level to 2
+  IFSCLR(1) = 0x1; // Clear SW3 interrupt flag
+  IECSET(1) = 0x1; // Enable SW3 interrupt
+
   /*
   INTEnableSystemMultiVectoredInt() is equivalent to the following:
   INTCONSET = _INTCON_MVEC_MASK;
@@ -80,7 +71,50 @@ void labinit( void )
   */
 }
 
+void user_isr( void ) 
+{
+  // Check if Timer 2 interrupt flag is set
+  if (IFS(0) & 0x100) {
+    // Clear Timer 2 interrupt flag
+    IFSCLR(0) = 0x100;
+
+    //time2string, display_string, display_update and tick
+    time2string( textstring, mytime );
+    display_string( 3, textstring );
+    display_update();
+    tick( &mytime );
+  }
+
+  // Check if SW3 interrupt flag is set
+  if (IFS(1) & 0x1) {
+    // Clear SW3 interrupt flag
+    IFSCLR(1) = 0x1;
+
+    /*
+    int sws = getsw(); // switches
+
+    if (sws & 0x4) { // if SW3 is active
+    (*porte)++; // Increment PORTE to update the LED status
+    
+    }
+    */
+  }
+}
+
+
+
+
+
 void labwork( void ) {
+
+  int sws = getsw(); // switches
+
+  if (sws & 0x4) { // if SW3 is active
+    (*porte)++; // Increment PORTE to update the LED status
+  }
+
+  
+
   prime = nextprime( prime );
   time2string(textstring, mytime);
   display_string(3, textstring);
