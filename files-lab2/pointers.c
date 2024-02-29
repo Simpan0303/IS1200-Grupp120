@@ -14,7 +14,7 @@ void copycodes(char* text, int** list, int* count) {
   //int len = strlen(text);
   int len=19;
   // Allocate memory for list
-  *list = (int*) malloc(sizeof(int) * len);
+  //*list = (int*) malloc(sizeof(int) * len);
 
   // Copy ASCII codes of text into list and increment count
   for (int i = 0; i < len; i++) {
