@@ -11,22 +11,16 @@ int count = 0; //= 0; // fix
 
 // Function to copy ASCII codes of text into list and increment count
 void copycodes(char* text, int* list, int* count) {
-  //int len = strlen(text);
-  /*
-  int len = 0;
-  while (text[len] != '\0') { // ger 80 bits fÃ¶r text2
-    len++;
-  }
-  */
-  int len = 19; // 80 bits
+  char *t0 = text;
+  int *t1 = count;
 
-  // Copy ASCII codes of text into list and increment count
-  for (int i = 0; i < len; i++) {
-    if (text[i] == '\0') {
-      break;
-    }
-    *(list + i) = (int) text[i];
-    (*count)++;
+  while(*t0 != 0) {
+      *list = *t0; //sw
+      
+      t0 = t0 + 1;
+      list = list + 1;
+      
+      *t1 = *t1 + 1;
   }
 }
 
