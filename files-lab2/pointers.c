@@ -4,9 +4,9 @@
 
 // Global variables
 char* text1 = "This is a string.";
-char text2 = "Yet another thing.";
+char* text2 = "Yet another thing.";
 int list1[19]
-int* list2[19]
+int list2[19]
 int count = 0; //= 0; // fix
 
 // Function to copy ASCII codes of text into list and increment count
