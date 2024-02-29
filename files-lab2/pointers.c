@@ -14,7 +14,7 @@ void copycodes(char* text, int* list, int* count) {
   //int len = strlen(text);
   /*
   int len = 0;
-  while (text[len] != '\0') { // ger 80 bits för text2
+  while (text[len] != '\0') { // ger 80 bits fÃ¶r text2
     len++;
   }
   */
@@ -25,8 +25,8 @@ void copycodes(char* text, int* list, int* count) {
     if (text[i] == '\0') {
       break;
     }
-    (list + i) = (int) text[i];
-    (count)++;
+    *(list + i) = (int) text[i];
+    (*count)++;
   }
 }
 
@@ -42,16 +42,16 @@ void work(void) {
 // Function to print ASCII codes and corresponding characters in a list
 void printlist(const int* lst) {
   printf("ASCII codes and corresponding characters.\n");
-  while (lst != 0) {
-    printf("0x%03X '%c' ",lst, (char)lst);
+  while (*lst != 0) {
+    printf("0x%03X '%c' ", *lst, (char)*lst);
     lst++;
   }
   printf("\n");
 }
 
-void endian_proof(const char c) {
+void endian_proof(const char* c) {
   printf("\nEndian experiment: 0x%02x,0x%02x,0x%02x,0x%02x\n",
-    (int)c, (int)(c + 1), (int)(c + 2), (int)(c + 3));
+    (int)*c, (int)*(c + 1), (int)*(c + 2), (int)*(c + 3));
 }
 
 int main(void) {
