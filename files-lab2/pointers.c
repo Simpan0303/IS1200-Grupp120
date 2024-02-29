@@ -11,8 +11,8 @@ int count = 0; //= 0; // fix
 
 // Function to copy ASCII codes of text into list and increment count
 void copycodes(char* text, int** list, int* count) {
-  int len = strlen(text);
-
+  //int len = strlen(text);
+  int len=19;
   // Allocate memory for list
   *list = (int*) malloc(sizeof(int) * len);
 
